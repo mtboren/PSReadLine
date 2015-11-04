@@ -156,6 +156,7 @@ namespace Microsoft.PowerShell
                 "Use-Transaction",
                 "Where-Object", "?", "where",
             };
+            UseTraditionalCompleteInput = false;
         }
 
         public EditMode EditMode { get; set; }
@@ -230,6 +231,13 @@ namespace Microsoft.PowerShell
         /// </summary>
         public string HistorySavePath { get; set; }
         public HistorySaveStyle HistorySaveStyle { get; set; }
+        /// <summary>
+        /// option:  use the same "truncate line at cursor" behavior as "regular" PowerShell for determining the string to pass to System.Management.Automation.CommandCompletion.CompleteInput() for getting matches? If so, will allow for tab completion of items _before_ the cursor (default PShell behavior); else, allows for tab completion of the item _under_ the cursor
+        /// examples:
+        ///   when false:  could tab complete "ge<cursorHere>t-h" to return "Get-Help" (default PSReadline behavior)
+        ///   when true:   could tab complete "get-h<cusorHere>about_switch" to return "Get-Help about_switch" (default PowerShell behavior)
+        /// </summary>
+        public bool UseTraditionalCompleteInput { get; set; }
 
         public ConsoleColor DefaultTokenForegroundColor { get; set; }
         public ConsoleColor CommentForegroundColor { get; set; }
@@ -545,6 +553,14 @@ namespace Microsoft.PowerShell
             set { _tokenKind = value; }
         }
         internal TokenClassification? _tokenKind;
+
+        [Parameter(ParameterSetName = "OptionsSet")]
+        public SwitchParameter UseTraditionalCompleteInput
+        {
+            get { return _useTraditionalCompleteInput.GetValueOrDefault(); }
+            set { _useTraditionalCompleteInput = value; }
+        }
+        internal SwitchParameter? _useTraditionalCompleteInput;
 
         [Parameter(ParameterSetName = "ColorSet", Position = 1)]
         public ConsoleColor ForegroundColor

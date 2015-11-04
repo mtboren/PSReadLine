@@ -156,6 +156,10 @@ namespace Microsoft.PowerShell
                 _historyFileMutex = new Mutex(false, GetHistorySaveFileMutexName());
                 _historyFileLastSavedSize = 0;
             }
+            if (options._useTraditionalCompleteInput.HasValue)
+            {
+                Options.UseTraditionalCompleteInput = options.UseTraditionalCompleteInput;
+            }
             if (options.ResetTokenColors)
             {
                 Options.ResetColors();

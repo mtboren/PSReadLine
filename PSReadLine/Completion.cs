@@ -220,7 +220,8 @@ namespace Microsoft.PowerShell
                         ps = System.Management.Automation.PowerShell.Create();
                         ps.Runspace = _runspace;
                     }
-                    _tabCompletions = _mockableMethods.CompleteInput(_buffer.ToString(), _current, null, ps);
+                    String tmpBufferStringForCompleteInput = Options.UseTraditionalCompleteInput ? _buffer.ToString().Substring(0, _current) : _buffer.ToString();
+                    _tabCompletions = _mockableMethods.CompleteInput(tmpBufferStringForCompleteInput, _current, null, ps);
 
                     if (_tabCompletions.CompletionMatches.Count == 0)
                         return null;
